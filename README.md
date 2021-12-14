@@ -4,6 +4,18 @@
 
 ![Git Flow diagram](assets/git-flow-diagram.png)
 
+## 2 Approaches to storing your own lecture related code 
+
+![Stash Workflow](assets/stash-workflow.png)
+
+With this approach, `main` will contain the starter code and the code you write will be stored separately in stashes that you can view within VSCode using the VSCode extension called [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+
+
+![Branch Workflow](assets/branch-workflow.png)
+
+With this approach, `main` will contain the starter code and the `my_code` branch will contain your solutions. This way, all the code you write will be visible to you within the `my_code` branch (which you'll spend most of your time on) so you'll be able to see your previous solutions and notes more easily.
+
+Using the checkout and merge commands are also both important skills that you'll use frequently when working as a web developer, so it can help you get comfortable with those as well.
 ## Todo On Day 1
 - Fork the repository
 - Once the fork is complete, clone your fork locally by clicking the Green Code button, selecting the SSH option and clicking the clipboard icon to copy the url to your clipboard.
