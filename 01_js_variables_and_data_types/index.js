@@ -192,23 +192,47 @@ console.log("------------------------");
 
     // // 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
 
-    if (otherDate < today) {
-        console.log('This date is in the past')
-    } else if (otherDate > today) {
-        console.log('This date is in the future')
-    } else {
-        console.log('This date is today!')
+    // if (otherDate < today) {
+    //     console.log('This date is in the past')
+    // } else if (otherDate > today) {
+    //     console.log('This date is in the future')
+    // } else {
+    //     console.log('This date is today!')
+    // }
+
+    // otherDate = tomorrow;
+    
+    // if (otherDate < today) {
+    //     console.log('This date is in the past')
+    // } else if (otherDate > today) {
+    //     console.log('This date is in the future')
+    // } else {
+    //     console.log('This date is today!')
+    // }
+
+    // otherDate = today;
+     
+    // if (otherDate < today) {
+    //     console.log('This date is in the past')
+    // } else if (otherDate > today) {
+    //     console.log('This date is in the future')
+    // } else {
+    //     console.log('This date is today!')
+    // }
+
+    function compareDateToToday(otherDate) {
+        if (otherDate < today) {
+            console.log('This date is in the past')
+        } else if (otherDate > today) {
+            console.log('This date is in the future')
+        } else {
+            console.log('This date is today!')
+        }
     }
 
-    otherDate = tomorrow;
-    
-    if (otherDate < today) {
-        console.log('This date is in the past')
-    } else if (otherDate > today) {
-        console.log('This date is in the future')
-    } else {
-        console.log('This date is today!')
-    }
+compareDateToToday(yesterday);
+compareDateToToday(tomorrow);
+compareDateToToday(today);
 
     // // 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧
    

@@ -49,7 +49,7 @@ At this point, you should see additional messages counting down from 10. If you 
 
 ### BONUS Deliverables:
 1. Try adjusting the message printed while the timer is running to print `1 second remaining` instead of `1 seconds remaining`. Hint: Ternary logic is a good fit here.
-2. Try using the `formatDuration` function (or logic from it) to handle the case where the time spent on a task is longer than 60 seconds. In that case, your `stopTimer` method should format the returned message including the time spent on the task. Perhaps something like this: `"Time Spent on Task: 2 minutes and 15 seconds"`
+2. Try using the `formatDuration` function (or logic from it) to handle the case where the time spent on a task is longer than 60 seconds. In that case, your `stopTimer` method should format the returned message including the time spent on the task. Perhaps something like this: `"Time Spent on Task: 2:15"`
 3. Handle the case where `stopTimer()` is called before `startTimer()`. What should happen in this case?
 
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 

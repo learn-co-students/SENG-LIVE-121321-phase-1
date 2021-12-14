@@ -1,16 +1,16 @@
 // ✅ Declaring, Referencing, and Invoking Functions
 
-  // function playSong() {
-  //   return "playing some song";
-  // }
+  function playSong() {
+    return "playing some song";
+  }
 
   // print a reference to the 'playSong' function
 
-    // console.log(playSong);
+    console.log(playSong);
 
   // call function and evaluate logic
   
-    // console.log(playSong());
+    console.log(playSong());
 
 // ✅ Parameters vs. Arguments
 
@@ -24,23 +24,23 @@
 
   // how can we use the paramater to make our code more dynamic?
 
-    // function playSong(song) {
-    //   return `playing: ${song}`;
-    // }
+    function playSong(songName) {
+      return `playing: ${songName}`;
+    }
 
   // now invoke the function and pass in an argument
 
-    // console.log(
-    //   playSong("Sweet Dreams")
-    // );
+    console.log(
+      playSong("Sweet Dreams")
+    );
 
 // ✅ Arrow Functions
 
 // const squareMe = (n) => n*n;
 
-// const squareMe = (n) => {
-//   return n*n;
-// }
+const squareMe = (n) => {
+  n*n;
+}
 
 // console.log(squareMe(2))
 
@@ -71,14 +71,17 @@ function log(obj) {
 // console.log('starting now');
 // window.setTimeout(callback, 2000);
 
+// array.forEach(name => {
+//   console.log(name);
+// })
 
-// let counter = 10;
-// const interval = window.setInterval(() => {
+let counter = 10;
+// const interval = setInterval(() => {
 //   console.log(counter);
 //   if(counter === 0) {
-//     window.clearInterval(interval);
+//     clearInterval(interval);
 //   }
-//   counter--; 
+//   counter--; // counter = counter - 1;
 // }, 1000);
 
 
@@ -122,6 +125,8 @@ function log(obj) {
 */
 
 // CODE HERE
+let currentSong = "What'd I Say";
+let currentSongDuration = 290;
 
 // ✅ Defining Functions
 
@@ -132,19 +137,42 @@ function log(obj) {
 */
 
 // CODE HERE
+// const formatDuration = (seconds) => `${Math.floor(seconds / 60)}:${seconds % 60 < 10 ? '0' : ''}${seconds % 60}`
+
+const formatDuration = (seconds) => {
+  if (seconds % 60 < 10) {
+    return `${Math.floor(seconds / 60)}:0${seconds % 60}`
+  } else {
+    return `${Math.floor(seconds / 60)}:${seconds % 60}`
+  }
+}
+
+// const formatDuration = (seconds) => {
+//   const minutesString = Math.floor(seconds / 60).toString();
+//   const secondsString = (seconds % 60).toString().padStart(2, '0');
+//   return `${minutesString}:${secondsString}`
+// }
 
 // uncomment the below to test it out
-// formatDuration(216) // should return '3:36'
+log(formatDuration(216)); // should return '3:36'
+log(formatDuration(186));
 
 /*
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 
 3. Create a function called `playSong` that will take a song as an argument and set `currentSong` to the argument passed.
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 
 
-// CODE HERE
+
 
 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 
 */
+
+// CODE HERE
+// function playSong(song) {
+//   currentSong = song;
+// }
+
+// playSong("Sweet Dreams")
 
 console.log("------------------------");
 console.log("⬇️ Activities ⬇️");
@@ -157,15 +185,38 @@ console.log("------------------------");
 // Declare `interval` and `timeSpent`
 
 // CODE HERE
+let timeSpent = 0;
+let interval;
 
 
 // 🚧 Activity Step 2: Utilizing Callbacks with `setInterval`
 // Declare the function startTimer below
 
 // CODE HERE
+function startTimer(seconds) {
+  let counter = seconds;
+  interval = setInterval(() => {
+    console.log(`${counter} second${counter !== 1 ? 's' : ''} remaining`);
+    timeSpent++;
+    if(counter === 0) {
+      clearInterval(interval);
+      console.log('Timer has expired!')
+    }
+    counter--; // counter = counter - 1;
+  }, 1000);
+}
 
 
+startTimer(5);
 // 🚧 Break Out Activity Step 3: Invoking `clearInterval` to stop the running timer and print the value of `timeSpent`
 // Declare the function stopTimer below
 
 // CODE HERE
+function stopTimer() {
+  if (interval) {
+    clearInterval(interval);
+    return `Time spent on Task: ${formatDuration(timeSpent)}`
+  } else {
+    return `Timer not started!`
+  }
+}
