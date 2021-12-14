@@ -197,12 +197,13 @@ function startTimer(seconds) {
   let counter = seconds;
   interval = setInterval(() => {
     console.log(`${counter} second${counter !== 1 ? 's' : ''} remaining`);
-    timeSpent++;
     if(counter === 0) {
       clearInterval(interval);
       console.log('Timer has expired!')
+    } else {
+      timeSpent++;
+      counter--; // counter = counter - 1;
     }
-    counter--; // counter = counter - 1;
   }, 1000);
 }
 
