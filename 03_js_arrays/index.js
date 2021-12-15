@@ -61,8 +61,15 @@ const playlist = [
 // this function will take the array as an argument and return the next id.
 const nextId = (array) => array[array.length - 1].id + 1;
 
+const assignCopy = (obj) => Object.assign({}, obj)
+
+const objSpreadCopy = (obj) => { return {...obj}}
+
 // create a copy of an object so we can see its state at a particular point in time.
 const copy = (obj) => JSON.parse(JSON.stringify(obj));
+
+// shallow copy (so if there are reference types as values inside of the object, those references are maintained)
+const spreadCopy = (array) => [...array]
 
 function formatDuration(duration) {
   const seconds = duration % 60; // duration - minutes * 60
@@ -75,45 +82,45 @@ function formatDuration(duration) {
 
 // this function should return the first element
 function retrieveFirst(playlist) {
-
+  return playlist[0]
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// console.log('retrieveFirst', retrieveFirst(playlist))
-// console.log('playlist after retrieveFirst', playlist)
+console.log('retrieveFirst', retrieveFirst(playlist))
+console.log('playlist after retrieveFirst', copy(playlist))
 
 // ✅ adding and removing values
 
 function addSongToBeginningOfPlaylist(playlist, song) {
-
+  return playlist.unshift(song)
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// console.log('addSongToBeginningOfPlaylist', addSongToBeginningOfPlaylist(playlist, {
-//   name: "What'd I Say",
-//   artist: 'Ray Charles',
-//   duration: 255,
-//   playCount: 0,
-//   youtubeLink: 'https://www.youtube.com/watch?v=HAjeSS3kktA'
-// })) 
-// console.log('playlist after addSongToBeginningOfPlaylist', playlist)
+console.log('addSongToBeginningOfPlaylist', addSongToBeginningOfPlaylist(playlist, {
+  name: "What'd I Say",
+  artist: 'Ray Charles',
+  duration: 255,
+  playCount: 0,
+  youtubeLink: 'https://www.youtube.com/watch?v=HAjeSS3kktA'
+})) 
+console.log('playlist after addSongToBeginningOfPlaylist', copy(playlist))
 
 function addSongToEndOfPlaylist(playlist, song) {
-
+  return playlist.push(song)
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// console.log('addSongToEndOfPlaylist',addSongToEndOfPlaylist(playlist, {
-//   name: "Georgia On My Mind",
-//   artist: 'Ray Charles',
-//   duration: 217,
-//   playCount: 0,
-//   youtubeLink: 'https://www.youtube.com/watch?v=ggGzE5KfCio'
-// })) 
-// console.log('playlist after addSongToEndOfPlaylist', playlist)
+console.log('addSongToEndOfPlaylist',addSongToEndOfPlaylist(playlist, {
+  name: "Georgia On My Mind",
+  artist: 'Ray Charles',
+  duration: 217,
+  playCount: 0,
+  youtubeLink: 'https://www.youtube.com/watch?v=ggGzE5KfCio'
+})) 
+console.log('playlist after addSongToEndOfPlaylist', copy(playlist))
 
 function removeLastSongFromPlaylist(playlist) {
 
@@ -125,24 +132,24 @@ function removeLastSongFromPlaylist(playlist) {
 // console.log('playlist after removeLastSongFromPlaylist', playlist)
 
 function removeFirstSongFromPlaylist(playlist) {
-
+  return playlist.shift()
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// console.log('removeFirstSongFromPlaylist', removeFirstSongFromPlaylist(playlist))
-// console.log('playlist after removeFirstSongFromPlaylist', playlist)
+console.log('removeFirstSongFromPlaylist', removeFirstSongFromPlaylist(playlist))
+console.log('playlist after removeFirstSongFromPlaylist', copy(playlist))
 
 // ✅ Iteration
 
 function logSongNames(playlist) {
-
+  playlist.forEach(song => console.log(song.name))
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// logSongNames(playlist) 
-// console.log('playlist after logSongNames', playlist)
+logSongNames(playlist) 
+console.log('playlist after logSongNames', playlist)
 
 function calculatePlaylistDuration(playlist) {
 
@@ -154,14 +161,14 @@ function calculatePlaylistDuration(playlist) {
 // console.log('playlist after calculatePlaylistDuration', playlist)
 
 
-function songsByArtist(playlist, artist) {
-
+function songsByArtist(playlist, artistName) {
+  return playlist.filter(song => song.artist === artistName)
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// console.log('songsByArtist', songsByArtist(playlist, "Queen")) // uncomment this to test
-// console.log('playlist after songsByArtist', playlist)
+console.log('songsByArtist', songsByArtist(playlist, "Queen")) // uncomment this to test
+console.log('playlist after songsByArtist', playlist)
 
 // what method of iteration should we use here?
 function renameArtist(playlist, oldArtistName, newArtistName) {
