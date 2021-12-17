@@ -34,8 +34,67 @@ let meals = [
   {
     meal: 'Fish & Chips',
     mealType: 'dinner'
+  },
+  { 
+    meal: 'Beanfields chips',
+    mealType: 'snack'
   }
 ]
+
+
+// const menu = {
+ 
+// }
+
+// dot notation version
+// meals.forEach(m => {
+//   if (m.mealType === 'breakfast') {
+//     menu.breakfast.push(m.meal);
+//   } else if (m.mealType === 'lunch') {
+//     menu.lunch.push(m.meal);
+//   } else if (m.mealType === 'dinner') {
+//     menu.dinner.push(m.meal)
+//   }
+// })
+
+// bracket notation version
+
+
+function generateMenu(meals) {
+  const menu = {}
+  meals.forEach(m => {
+    if(!menu[m.mealType]) {
+      menu[m.mealType] = []
+    }
+    menu[m.mealType].push(m.meal)
+  })
+  return menu;
+}
+
+console.log('generateMenu(meals)', generateMenu(meals))
+
+// reduce version
+function generateMenuWithReduce(meals) {
+  return meals.reduce((menu, m) => {
+    if(!menu[m.mealType]) {
+      menu[m.mealType] = []
+    }
+    menu[m.mealType].push(m.meal)
+    return menu;
+  }, {})
+}
+
+const menu = generateMenu(meals)
+
+for (const menuItem in menu) {
+  console.log(`${menuItem}`)
+  menu[menuItem].forEach(m => console.log(`  ${m}`))
+}
+
+Object.keys(menu).forEach(menuItem => {
+  console.log(`${menuItem}`)
+  menu[menuItem].forEach(m => console.log(`  ${m}`))
+})
 
 let shoppingList = [
   {name: 'Apples', quantity: 2, price: 1.99},

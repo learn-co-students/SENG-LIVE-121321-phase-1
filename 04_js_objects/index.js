@@ -95,7 +95,17 @@ console.log('playlist after retrieveFirst', copy(playlist))
 // ✅ adding and removing values
 
 function addSongToPlaylist(playlist, song) {
+  // we want to add properties for id and playCount
+  song.id = nextId(playlist);
+  song.playCount = 0;
   return playlist.push(song)
+  // non-destructive versions
+  // playlist.push({
+  //   ...song,
+  //   id: nextId(playlist),
+  //   playCount: 0
+  // })
+  // playlist.push(Object.assign({}, song, {id: nextId(playlist), playCount: 0}))
 }
 
 // // 👟👟👟 uncomment the lines below to test
@@ -104,7 +114,6 @@ console.log('addSongToPlaylist',addSongToPlaylist(playlist, {
   name: "Georgia On My Mind",
   artist: 'Ray Charles',
   duration: 217,
-  playCount: 0,
   youtubeLink: 'https://www.youtube.com/watch?v=ggGzE5KfCio'
 })) 
 console.log('playlist after addSongToPlaylist', copy(playlist))
@@ -115,6 +124,8 @@ function removeSongFromPlaylist(playlist, songId) {
   if (songIndex > -1) {
     return playlist.splice(songIndex, 1)[0]
   }
+  // non-destructive delete (creating a new array without the deleted element)
+  // playlist.filter(song => song.id !== songId)
 }
 
 // // 👟👟👟 uncomment the lines below to test
@@ -146,13 +157,22 @@ function calculatePlaylistDuration(playlist) {
 
 // what method of iteration should we use here?
 function renameArtist(playlist, oldArtistName, newArtistName) {
-
+  return playlist.map(song => {
+    // if (song.artist === oldArtistName) {
+    //   song.artist = newArtistName;
+    // }
+    // return song.artist;
+    return {
+      ...song,
+      artist: song.artist === oldArtistName ? newArtistName : song.artist
+    }
+  })
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// console.log('renameArtist', renameArtist(playlist, "Prince", "The Artist Formerly Known As Prince"))
-// console.log('playlist after renameArtist', playlist)
+console.log('renameArtist', renameArtist(playlist, "Prince", "The Artist Formerly Known As Prince"))
+console.log('playlist after renameArtist', playlist)
 
 
 // // Let's discuss Pass by value vs pass by reference here
