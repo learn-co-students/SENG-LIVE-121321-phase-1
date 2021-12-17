@@ -1,6 +1,7 @@
 const ____ = "FILL ME IN"
 const playlist = [
   {
+    id: 1,
     name: "What'd I Say",
     artist: 'Ray Charles',
     duration: 255,
@@ -8,6 +9,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=HAjeSS3kktA'
   },
   {
+    id: 2,
     name: 'Sweet Dreams',
     artist: 'The Eurythmics',
     duration: 216,
@@ -15,6 +17,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=qeMFqkcPYcg'
   },
   {
+    id: 3,
     name: 'Cry Me a River',
     artist: 'Justin Timberlake',
     duration: 290,
@@ -22,6 +25,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=DksSPZTZES0'
   },
   {
+    id: 4,
     name: 'With a Little Help from my Friends',
     artist: 'Joe Cocker',
     duration: 289,
@@ -29,6 +33,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=a3LQ-FReO7Q'
   },
   {
+    id: 5,
     name: 'Bohemian Rhapsody',
     artist: 'Queen',
     duration: 359,
@@ -36,6 +41,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ'
   },
   {
+    id: 6,
     name: 'Somebody To Love',
     artist: 'Queen',
     duration: 309,
@@ -43,6 +49,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=kijpcUv-b8M'
   },
   {
+    id: 7,
     name: 'Another One Bites the Dust',
     // name: '<style>@keyframes x{}</style><img style="animation-name:x" onanimationend="alert(1)"/>Another One Bites the Dust',
     artist: 'Queen',
@@ -51,6 +58,7 @@ const playlist = [
     youtubeLink: 'https://www.youtube.com/watch?v=eqyUAtzS_6M'
   },
   {
+    id: 8,
     name: 'Purple Rain',
     artist: 'Prince',
     duration: 477,
@@ -75,17 +83,20 @@ function formatDuration(duration) {
 // ✅ Creating DOM elements (Avoiding XSS vulnerability)
 
 function renderSong(song) {
-  const li = ____;
+  const li = document.createElement('li');
   li.className = "flex justify-between p-2 pr-4 cursor-pointer"
+  li.dataset.id = song.id;
   li.innerHTML = `
   <div>
-    <span class="song font-semibold">${song.name}</span>
-    <span class="artist">by ${song.artist}</span>
+    <span class="song font-semibold"></span>
+    <span class="artist text-gray-400"></span>
   </div>
   <div class="duration text-gray-400">${formatDuration(song.duration)}</div>`
+  const songEl = li.querySelector('.song').textContent = song.name;
+  const artistEl = li.querySelector('.artist').textContent = `by ${song.artist}`;
   // fill in the blank below with the code needed to find the
   // element on the page where we want to append the li
-  ____.append(li);
+  document.querySelector('#playlist').append(li);
   return li;
 }
 
@@ -93,12 +104,13 @@ function renderSong(song) {
 function loadPlaylistToSidebar(playlist) {
   // write the code needed to load all songs in the playlist
   // into the sidebar
-  ____
+  document.querySelector('#playlist').innerHTML = "";
+  playlist.forEach(renderSong)
 }
 
 // // 👟👟👟 uncomment the line below to test
 
-// loadPlaylistToSidebar(playlist);
+loadPlaylistToSidebar(playlist);
 
 // once we've got the songs loaded into the sidebar,
 // we'll update the playlist array up top to demonstrate
@@ -110,30 +122,31 @@ function addSongToPlaylist(playlist, song) {
   song.playCount = 0;
   playlist.push(song);
   // Update the DOM with the new song in the sidebar
-  ____
+  renderSong(song)
   return song;
 }
 
 // // 👟👟👟 uncomment the lines below to test
 
-// window.setTimeout(() => {
-//   console.log('addSongToPlaylist', addSongToPlaylist(playlist, {
-//     name: "Georgia On My Mind",
-//     artist: 'Ray Charles',
-//     duration: 217,
-//     playCount: 0,
-//     youtubeLink: 'https://www.youtube.com/watch?v=ggGzE5KfCio'
-//   })) 
-//   console.log('playlist after addSongToPlaylist', copy(playlist))
-// }, 1000)
+window.setTimeout(() => {
+  console.log('addSongToPlaylist', addSongToPlaylist(playlist, {
+    name: "Georgia On My Mind",
+    artist: 'Ray Charles',
+    duration: 217,
+    playCount: 0,
+    youtubeLink: 'https://www.youtube.com/watch?v=ggGzE5KfCio'
+  })) 
+  console.log('playlist after addSongToPlaylist', copy(playlist))
+}, 1000)
 
 // ✅ Removing DOM elements
 
 function removeSongFromPlaylist(playlist, songId) {
-  const foundSongIndex = playlist.findIndex(song => song.id === songId)
+  const foundSongIndex = playlist.findIndex(song => song.id === parseInt(songId, 10))
   if (foundSongIndex !== -1) {
     const songToRemove = playlist.splice(foundSongIndex, 1)[0];
     // Remove the song from playlist in the sidebar
+    document.querySelector(`#playlist li[data-id="${songId}"]`).remove()
     return songToRemove;
   } else {
     alert('Song not found!')
@@ -142,10 +155,10 @@ function removeSongFromPlaylist(playlist, songId) {
 
 // // 👟👟👟 uncomment the lines below to test
 
-// window.setTimeout(() => {
-//   console.log('removeSongFromPlaylist', removeSongFromPlaylist(playlist, 'https://www.youtube.com/watch?v=ggGzE5KfCio'))
-//   console.log('playlist after addSongToPlaylist', copy(playlist))
-// }, 3000)
+window.setTimeout(() => {
+  console.log('removeSongFromPlaylist', removeSongFromPlaylist(playlist, '9'))
+  console.log('playlist after addSongToPlaylist', copy(playlist))
+}, 3000)
 
 // ✅ Updating DOM elements
 
@@ -164,14 +177,15 @@ function extractVideoID(url) {
 // Take care **NOT** to put the youtubeLink from the song directly into the src attribute for the iframe. We want it to be an embed version of the link and we want to make sure we're extracting the VideoID using the function defined above
 function loadSongIntoPlayer(song) {
   // target the songName element and put the song's name inside
-
+  document.querySelector('#song-name').textContent = song.name;
   // get the artist element and put the artist's name inside of it
-
+  document.querySelector('#artist').textContent = song.artist
   // get the play count element and put the song's playCount into it
-
+  document.querySelector('#play-count').textContent = `${song.playCount} play(s)`
   // get the playerElement and use the extractVideoID function as 
   // in the example below to set the src attribute of the iframe
   //`https://www.youtube.com/embed/${extractVideoID(song.youtubeLink)}`;
+  document.querySelector('#player-frame').src = `https://www.youtube.com/embed/${extractVideoID(song.youtubeLink)}`;
 }
 
 
@@ -179,9 +193,9 @@ function loadSongIntoPlayer(song) {
 // // 👟👟👟 uncomment the lines below to test
 
 
-// loadSongIntoPlayer(playlist[0]);
-// loadSongIntoPlayer(playlist[1]);
-// loadSongIntoPlayer(playlist[2]);
+loadSongIntoPlayer(playlist[0]);
+loadSongIntoPlayer(playlist[1]);
+loadSongIntoPlayer(playlist[2]);
 // loadSongIntoPlayer(playlist[3]);
 // loadSongIntoPlayer(playlist[4]);
 // loadSongIntoPlayer(playlist[5]);
