@@ -56,6 +56,10 @@
 - `handleChooseSong(song)`
   - we'll need to attach an event listener to each list item in the sidebar.
   - when one of them is clicked, we'll invoke `loadSongIntoPlayer` and pass in the appropriate `song` as an argument.
+- `loadArtistChoices(playlist)`
+  - on page load, we'll need to add an option for each artist who has a song in the playlist
+- `handleChooseArtist(event)`
+  - we'll also want to attach an event listener to the select tag where those options live. When the select tag changes, we'll want to update the playlist with the songs by the selected artist. If the choice is all artists, all songs should show.
 
 ## Todo List Application Summary
 

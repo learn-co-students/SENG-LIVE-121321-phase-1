@@ -69,7 +69,12 @@
   </section>
   <section class="grid sm:grid-cols-3 gap-2 p-4" >
     <section id="sidebar" class="border-r-2 min-h-screen">
-      <h2 class="text-2xl p-2 mb-2 border-b-2">Songs</h2>
+      <h2 class="text-2xl p-2 mb-2 border-b-2 flex justify-between">
+        <span>Songs</span>
+        <select id="filterByArtist">
+          <option value="">Filter by artist</option>
+        </select>
+      </h2>
       <ul class="space-y-2" id="playlist">
 
       </ul>
