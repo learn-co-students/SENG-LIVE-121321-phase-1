@@ -26,7 +26,7 @@ function getTodoListElement() {
 function renderTask(task) {
   const li = document.createElement('li');
   li.className = 'grid grid-cols-12 items-center task';
-  li.dataset.taskId = task.id;
+  li.dataset.id = task.id;
   li.innerHTML = `
   <span class="col-span-6 task-label">
 
@@ -46,6 +46,12 @@ function renderTask(task) {
   taskLabelEl.textContent = task.label;
   dueDateEl.textContent = task.dueDate;
   completedEl.innerHTML = `<i class="far ${task.complete ? 'fa-check-square' : 'fa-square'} text-4xl text-green-300 cursor-pointer"></i>`;
+  // - `handleToggleComplete(task)`
+  //   - we'll need to attach an event listener to each box in the todo list. 
+  //   - when one of them is clicked, we'll invoke `toggleComplete` and pass in the appropriate `task` as an argument.
+  completedEl.addEventListener('click', (e) => {
+    toggleComplete(task.id);
+  })
   document.querySelector('#todoList').append(li);
   return li;
 }
@@ -64,7 +70,7 @@ function addTask(todoList, task) {
   };
   todoList.push(newTask);
   // 🚧 🚧 🚧
-  renderTask(task);
+  renderTask(newTask);
   // 🚧 🚧 🚧
   return newTask;
 }
@@ -83,7 +89,7 @@ function removeTask(todoList, taskId) {
 }
 
 function toggleComplete(taskId) {
-  const task = todoList.find(task => task.id === taskId)
+  const task = todoList.find(task => task.id === parseInt(taskId, 10))
   task.complete = !task.complete;
   // Update the Task in the DOM to indicate that the task is completed.
   updateTask(task);
@@ -91,7 +97,7 @@ function toggleComplete(taskId) {
 }
 
 function updateTask(task) {
-  const li = document.querySelector('#todoList li[data-id="${task.id}"]');
+  const li = document.querySelector(`#todoList li[data-id="${task.id}"]`);
   const taskLabelEl = li.querySelector('.task-label');
   const dueDateEl = li.querySelector('.due-date');
   const completedEl = li.querySelector('.completed');
@@ -106,9 +112,15 @@ function updateTask(task) {
 //   - we'll need to prevent the default behavior.
 //   - we'll then need to attach an event listener to the newTask form.
 //   - when the form is submitted, we'll pull the data out of the form, and pass it to `addTask` function.
+document.querySelector('#newTask').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const taskData = {
+    label: form.labelInput.value,
+    dueDate: form.dueDateInput.value
+  }
+  addTask(todoList, taskData);
+  form.reset();
+})
 
 
-
-// - `handleToggleComplete(task)`
-//   - we'll need to attach an event listener to each box in the todo list.
-//   - when one of them is clicked, we'll invoke `toggleComplete` and pass in the appropriate `task` as an argument.
