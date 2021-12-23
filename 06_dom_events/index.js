@@ -66,6 +66,9 @@ const playlist = [
   }
 ]
 
+// this function will take the array as an argument and return the next id.
+const nextId = (array) => array[array.length - 1].id + 1;
+
 function formatDuration(duration) {
   const seconds = duration % 60; // duration - minutes * 60
   const minutes = Math.floor(duration / 60) % 60;
@@ -92,6 +95,9 @@ function renderSong(song) {
     <span class="artist text-gray-400"></span>
   </div>
   <div class="duration text-gray-400"></div>`;
+  li.addEventListener('click', () => {
+    loadSongIntoPlayer(song);
+  })
   const songEl = li.querySelector('.song');
   const artistEl = li.querySelector('.artist');
   const durationEl = li.querySelector('.duration')
@@ -105,9 +111,10 @@ function renderSong(song) {
 function loadPlaylistToSidebar(playlist) {
   document.querySelector('#playlist').innerHTML = "";
   playlist.forEach(renderSong)
+  loadSongIntoPlayer(playlist[0])
 }
 
-loadPlaylistToSidebar(playlist);
+
 
 function addSongToPlaylist(playlist, song) {
   song.id = nextId(playlist);
@@ -148,6 +155,41 @@ function loadSongIntoPlayer(song) {
 function songsByArtist(playlist, artist) {
   const target = document.querySelector('#playlist')
   target.innerHTML = '';
-  const songsByArtist = playlist.filter(song => song.artist === artist)
+  const songsByArtist = playlist.filter(song => song.artist.includes(artist))
   loadPlaylistToSidebar(songsByArtist)
 }
+
+function loadArtistChoices(playlist) {
+  const artists = playlist.reduce((artistsArray, song) => {
+    if (artistsArray.indexOf(song.artist) === -1) {
+      artistsArray.push(song.artist);
+    }
+    return artistsArray
+  }, []);
+  const artistSelect = document.querySelector('#filterByArtist')
+  artists.forEach(artist => {
+    const option = document.createElement('option');
+    option.value = artist;
+    option.textContent = artist;
+    artistSelect.append(option);
+  })
+}
+
+document.addEventListener('DOMContentLoaded', (e) => {
+  loadPlaylistToSidebar(playlist);
+  loadArtistChoices(playlist)
+  document.querySelector('#newSong').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const songDataFromForm = {
+      name: e.target.nameInput.value,
+      artist: e.target.artistInput.value,
+      youtubeLink: e.target.youtubeLinkInput.value,
+      duration: formattedDurationToSeconds(e.target.durationInput.value)
+    };
+    addSongToPlaylist(playlist, songDataFromForm);
+    e.target.reset();
+  })
+  document.querySelector('#filterByArtist').addEventListener('change', (e) => {
+    songsByArtist(playlist, e.target.value);
+  })
+})
