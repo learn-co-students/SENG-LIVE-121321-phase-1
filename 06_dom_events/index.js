@@ -146,6 +146,11 @@ function extractVideoID(url) {
 }
 
 function loadSongIntoPlayer(song) {
+  document.querySelectorAll('#playlist li').forEach(li => {
+    li.classList.remove('bg-gray-100')
+  })
+  const selectedLi = document.querySelector(`#playlist li[data-id="${song.id}"]`);
+  selectedLi.classList.add('bg-gray-100')
   document.querySelector('#song-name').textContent = song.name;
   document.querySelector('#artist').textContent = song.artist;
   document.querySelector('#play-count').textContent = song.playCount === 1 ? '1 play' : `${song.playCount} plays`;
