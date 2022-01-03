@@ -66,7 +66,7 @@ console.log('after fetch')
 
 
 - Here we see `fetch()` taking a single parameter — the URL of a resource you want to fetch from the network — and returning a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for a [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object. 
-- The promise is an object representing the evental completion or failure of the async operation. 
+- The promise is an object representing the eventual completion or failure of the async operation. 
 - The promise is the browser's way of saying "I promise to get back to you with the answer as soon as I can," hence the name "promise."
 
 Neither of the possible outcomes have happened yet, so the fetch operation is currently waiting on the result of the browser trying to complete the operation at some point in the future. We've then got three further code blocks chained onto the end of the fetch():
