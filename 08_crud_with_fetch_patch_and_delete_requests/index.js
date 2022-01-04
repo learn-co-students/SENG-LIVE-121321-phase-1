@@ -1,5 +1,4 @@
 // Behavior
-
 function init() {
   // fetch songs for initial load
   getSongs()
@@ -48,7 +47,43 @@ function init() {
         event.target.reset();
       })
   })
+
+  const editSongForm = document.querySelector('#editSong');
+  editSongForm.addEventListener('input', (e) => {
+    triggerSongAutoSave()
+  })
+  editSongForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+  })
+
+  let queuedSongAutoSave;
+  function triggerSongAutoSave() {
+    window.clearTimeout(queuedSongAutoSave);
+    queuedSongAutoSave = window.setTimeout(() => {
+      const songId = editSongForm.dataset.songId;
+      const songData = {
+        name: document.getElementById('song-name').value,
+        artist: document.getElementById('artist').value,
+        playCount: parseInt(document.getElementById('play-count').value, 10)
+      };
+      updateSong(songId, songData)
+        .then(renderSong)
+    }, 300)
+  }
+
+  const deleteBtn = document.querySelector('#deleteSong');
+  deleteBtn.addEventListener('click', (e) => {
+    const songIdToDelete = deleteBtn.dataset.songId;
+    deleteSong(songIdToDelete)
+      .then(() => {
+        document.querySelector(`#playlist li[data-id="${songIdToDelete}"]`).remove();
+      })
+      .then(() => {
+        return getSongs();
+      })
+  })
 }
+
 
 document.addEventListener('DOMContentLoaded', init)
 
@@ -77,6 +112,7 @@ function searchArtists(artist) {
   return fetch(`https://musicbrainz.org/ws/2/artist/?query=${encodeURI(artist)}&fmt=json`)
     .then(response => response.json())
     .then(artistInfo => {
+      console.log('artistInfo', artistInfo)
       const artistId = artistInfo.artists[0].id
       return getInfoAboutArtist(artistId)
     })
@@ -86,11 +122,28 @@ function getInfoAboutArtist(artistId) {
   return fetch(`https://musicbrainz.org/ws/2/artist/${artistId}?inc=releases&fmt=json`)
     .then(response => response.json())
     .then(data => {
+      console.log('artistData', data)
       return data.releases.map(r => `${r.title} (${r.date})`)
     })
 }
 
-// Add update and delete song functions
+  // Add update and delete song functions
+  function updateSong(songId, songData) {
+    return fetch(`http://localhost:3000/songs/${songId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(songData)
+    })
+      .then(res => res.json())
+  }
+
+  function deleteSong(songId) {
+    return fetch(`http://localhost:3000/songs/${songId}`, {
+      method: 'DELETE'
+    })
+  }
 
 
   function getComments(song) {
@@ -117,7 +170,8 @@ function getInfoAboutArtist(artistId) {
 // Display
 
   function renderSong(song) {
-    const li = document.createElement('li');
+    const existingLi = document.querySelector(`#playlist li[data-id="${song.id}"]`);
+    const li = existingLi || document.createElement('li');
     li.dataset.id = song.id;
     li.className = "flex justify-between p-2 pr-4 cursor-pointer";
     li.innerHTML = `
@@ -135,8 +189,10 @@ function getInfoAboutArtist(artistId) {
     songEl.textContent = song.name;
     artistEl.textContent = `by ${song.artist}`;
     durationEl.textContent = song.duration;
-    const target = document.querySelector('#playlist');
-    target.append(li);
+    if (!existingLi) {
+      const target = document.querySelector('#playlist');
+      target.append(li);
+    }
     return li;
   }
 
@@ -166,9 +222,9 @@ function getInfoAboutArtist(artistId) {
     })
     const selectedLi = document.querySelector(`#playlist li[data-id="${song.id}"]`);
     selectedLi.classList.add('bg-gray-100')
-    document.querySelector('#song-name').textContent = song.name;
-    document.querySelector('#artist').textContent = song.artist;
-    document.querySelector('#play-count').textContent = song.playCount === 1 ? '1 play' : `${song.playCount} plays`;
+    document.querySelector('#song-name').value = song.name;
+    document.querySelector('#artist').value = song.artist;
+    document.querySelector('#play-count').value = song.playCount;
     document.querySelector('#player-frame').src = `https://www.youtube.com/embed/${extractVideoID(song.youtubeLink)}`;
     searchArtists(song.artist)
       .then(populateReleases)
@@ -179,6 +235,8 @@ function getInfoAboutArtist(artistId) {
     // handler to ensure that the comment is 
     // associated with the song that is loaded into
     // the player.
+    document.querySelector('#editSong').dataset.songId = song.id;
+    document.querySelector('#deleteSong').dataset.songId = song.id;
     document.querySelector('#newComment').dataset.songId = song.id;
     // clear out the comments list and load comments for this song into the comments part of the DOM
     document.querySelector('#comments').innerHTML = "";
