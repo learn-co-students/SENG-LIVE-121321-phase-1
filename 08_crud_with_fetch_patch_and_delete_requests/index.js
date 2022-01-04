@@ -165,7 +165,23 @@ function getInfoAboutArtist(artistId) {
   // 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 
   // add in updateComment(commentId, commentData) and
   // deleteComment(commentId)
+  function updateComment(commentId, commentData) {
+    return fetch(`http://localhost:3000/comments/${commentId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(commentData)
+    })  
+      .then(res => res.json())
+  }
   
+  function deleteComment(commentId) {
+    return fetch(`http://localhost:3000/comments/${commentId}`, {
+      method: 'DELETE'
+    })  
+      .then(res => res.json())
+  }
 
 // Display
 
@@ -287,7 +303,13 @@ function getInfoAboutArtist(artistId) {
     input.value = record.comment;
     // 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 
     // add event listeners for updating or deleting a comment
-    
+    input.addEventListener('input', (e) => {
+      updateComment(record.id, {comment: e.target.value})
+    })
+    deleteBtn.addEventListener('click', (e) => {
+      deleteComment(record.id)
+        .then(() => p.remove())
+    })
     target.append(p);
   }
 
