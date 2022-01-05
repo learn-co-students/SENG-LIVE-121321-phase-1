@@ -267,8 +267,8 @@ formState => {...formState, [name]: value}
 This is more frequently seen like this:
 
 ```js
-formState => return {
-  {
+formState => {
+  return {
     ...formState,
     [name]: value
   }

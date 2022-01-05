@@ -50,6 +50,8 @@ function init() {
 
   const editSongForm = document.querySelector('#editSong');
   editSongForm.addEventListener('input', (e) => {
+    const { name, value } = e.target;
+    console.log('name:', name, 'value:', value);
     triggerSongAutoSave()
   })
   editSongForm.addEventListener('submit', (e) => {
@@ -57,7 +59,7 @@ function init() {
   })
 
   let queuedSongAutoSave;
-  function triggerSongAutoSave() {
+  const triggerSongAutoSave = () => {
     window.clearTimeout(queuedSongAutoSave);
     queuedSongAutoSave = window.setTimeout(() => {
       const songId = editSongForm.dataset.songId;
@@ -90,14 +92,14 @@ document.addEventListener('DOMContentLoaded', init)
 // Data
 
 // accepts an artist as an argument (optional) returns a promise for all songs (by the artist if an argument is provided)
-function getSongs(artist = "") {
+const getSongs = (artist = "") => {
   const url = artist ? `http://localhost:3000/songs?artist=${artist}` : 'http://localhost:3000/songs'
   return fetch(url)
     .then(response => response.json())
 }
 
 // accept an object containing song data as an argument and post it to the database
-function createSong(songData) {
+const createSong = (songData) => {
   return fetch('http://localhost:3000/songs', {
     method: 'POST',
     headers: {
@@ -108,7 +110,7 @@ function createSong(songData) {
     .then(response => response.json())
 }
 
-function searchArtists(artist) {
+const searchArtists = (artist) => {
   return fetch(`https://musicbrainz.org/ws/2/artist/?query=${encodeURI(artist)}&fmt=json`)
     .then(response => response.json())
     .then(artistInfo => {
@@ -118,7 +120,7 @@ function searchArtists(artist) {
     })
 }
 
-function getInfoAboutArtist(artistId) {
+const getInfoAboutArtist = (artistId) => {
   return fetch(`https://musicbrainz.org/ws/2/artist/${artistId}?inc=releases&fmt=json`)
     .then(response => response.json())
     .then(data => {
@@ -128,7 +130,7 @@ function getInfoAboutArtist(artistId) {
 }
 
   // Add update and delete song functions
-  function updateSong(songId, songData) {
+  const updateSong = (songId, songData) => {
     return fetch(`http://localhost:3000/songs/${songId}`, {
       method: 'PATCH',
       headers: {
@@ -139,19 +141,19 @@ function getInfoAboutArtist(artistId) {
       .then(res => res.json())
   }
 
-  function deleteSong(songId) {
+  const deleteSong = (songId) => {
     return fetch(`http://localhost:3000/songs/${songId}`, {
       method: 'DELETE'
     })
   }
 
 
-  function getComments(song) {
+  const getComments = (song) => {
     return fetch(`http://localhost:3000/comments?songId=${song.id}`)
       .then(res => res.json())
   }
   // add in createComment
-  function createComment(commentData) {
+  const createComment = (commentData) => {
     return fetch('http://localhost:3000/comments', {
       method: 'POST',
       headers: {
@@ -165,7 +167,7 @@ function getInfoAboutArtist(artistId) {
   // 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 🚧 
   // add in updateComment(commentId, commentData) and
   // deleteComment(commentId)
-  function updateComment(commentId, commentData) {
+  const updateComment = (commentId, commentData) => {
     return fetch(`http://localhost:3000/comments/${commentId}`, {
       method: 'PATCH',
       headers: {
@@ -176,7 +178,7 @@ function getInfoAboutArtist(artistId) {
       .then(res => res.json())
   }
   
-  function deleteComment(commentId) {
+  const deleteComment = (commentId) => {
     return fetch(`http://localhost:3000/comments/${commentId}`, {
       method: 'DELETE'
     })  
@@ -185,7 +187,7 @@ function getInfoAboutArtist(artistId) {
 
 // Display
 
-  function renderSong(song) {
+  const renderSong = (song) => {
     const existingLi = document.querySelector(`#playlist li[data-id="${song.id}"]`);
     const li = existingLi || document.createElement('li');
     li.dataset.id = song.id;
@@ -212,27 +214,27 @@ function getInfoAboutArtist(artistId) {
     return li;
   }
 
-  function loadSongsIntoSidebar(songs) {
+  const loadSongsIntoSidebar = (songs) => {
     document.querySelector('#playlist').innerHTML = "";
     songs.forEach(renderSong)
     loadSongIntoPlayer(songs[0])
   }
 
-  function displayTotalDuration(songs) {
+  const displayTotalDuration = (songs) => {
     document.querySelector('#totalDuration').textContent = calculateDuration(songs);
   }
 
-  function addSong(song) {
+  const addSong = (song) => {
     renderSong(song);
     return song;
   }
 
-  function removeSongFromPlaylist(songId) {
+  const removeSongFromPlaylist = (songId) => {
     document.querySelector(`#playlist li[data-id="${songId}"]`).remove()
     return songToRemove;
   }
 
-  function loadSongIntoPlayer(song) {
+  const loadSongIntoPlayer = (song) => {
     document.querySelectorAll('#playlist li').forEach(li => {
       li.classList.remove('bg-gray-100')
     })
@@ -260,7 +262,7 @@ function getInfoAboutArtist(artistId) {
       .then(renderComments)
   }
 
-  function loadArtistChoices(playlist) {
+  const loadArtistChoices = (playlist) => {
     const artistSelect = document.querySelector('#filterByArtist');
     artistSelect.innerHTML = `<option value="">Filter by artist</option>`;
     const artists = playlist.reduce((artistsArray, song) => {
@@ -277,7 +279,7 @@ function getInfoAboutArtist(artistId) {
     });
   }
 
-  function populateReleases(releases) {
+  const populateReleases = (releases) => {
     const target = document.querySelector('#releases');
     target.innerHTML = "";
     const list = releases.forEach(release => {
@@ -290,7 +292,7 @@ function getInfoAboutArtist(artistId) {
   // define a function renderComment for 
   // rendering a single comment from a 
   // peristed record passed as an argument
-  function renderComment(record) {
+  const renderComment = (record) => {
     const target = document.querySelector('#comments');
     const p = document.createElement('p');
     p.className = "flex justify-between";
@@ -317,26 +319,26 @@ function getInfoAboutArtist(artistId) {
   // clearing out the comments and fill in the
   // div with the retrieved comments from the API
   // passing them to renderComment 
-  function renderComments(comments) {
+  const renderComments = (comments) => {
     const target = document.querySelector('#comments');
     target.innerHTML = "";
     comments.forEach(renderComment)
   }
 
 // helper functions
-function formatDuration(duration) {
+const formatDuration = (duration) => {
   const seconds = duration % 60; // duration - minutes * 60
   const minutes = Math.floor(duration / 60) % 60;
   const hours = Math.floor(duration / 3600);
   return `${hours ? (hours + ':') : ''}${minutes}:${seconds < 10 ? ('0'+ seconds) : seconds}`
 }
 
-function formattedDurationToSeconds(formattedDuration) {
+const formattedDurationToSeconds = (formattedDuration) => {
   const [seconds, minutes, hours] = formattedDuration.split(':').map(num => parseInt(num)).reverse();
   return seconds + (minutes ? minutes * 60 : 0) + (hours ? hours * 3600 : 0);
 }
 
-function extractVideoID(url) {
+const extractVideoID = (url) => {
   const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
   const match = url.match(regExp);
   if (match && match[7].length == 11) {
@@ -346,7 +348,7 @@ function extractVideoID(url) {
   }
 }
 
-function calculateDuration(songs) {
+const calculateDuration = (songs) => {
   const totalDuration = songs.reduce((total, song) => {
     return total + formattedDurationToSeconds(song.duration)
   }, 0)
