@@ -40,7 +40,7 @@
 	function findIndex(itemsArray, matchCase) {
 		for (let i = 0, total = itemsArray.length; i < total; i++)
 		  if (itemsArray[i] == matchCase) {
-			console.log(i);
+				console.log(i);
 		  }
 		 console.log(-1);
 	};
@@ -49,10 +49,12 @@
 	
 	// findIndex(lettersArray, 'a'); 	
 	// 0  (best case, one iteration)
+	// Big Ω(1) (we find it in the first index)
 
 // ✅ Big O Notation
 
 	// worst case running time
+	// Big O(N)
 	
 	// knowing Big O helps us to be more aware of the efficiency of algorithms so
 	// that we can optimize the performance of our applications
@@ -135,6 +137,12 @@ console.log("------------------------");
 		}
 
 	// ✅ Write your answer / explanation here.
+	
+	// Time: O(N) Space: O(1)
+	
+	// in the worst case, the number is the last in the array or not present
+	// in both cases, the algorithm will traverse the entire array of N elements
+	// the length of the array doesn't affect how much memory the algorithm uses.
 
 	// 2️⃣ Determine the Big O runtime of findIndexOfEachNumber() below.
 
@@ -168,6 +176,8 @@ console.log("------------------------");
 		}
 
 		// ✅ Write your answer / explanation here.
+		// Time:  O(1) The algorithm accesses individual array values by index. Because this does not require iteration, the size of the array doesn't affect how many operations the algorithm requires
+		// Space: O(1) We're not storing information proportional to the size of the input.
 
 	// 2️⃣ Determine the Big O runtime of findSumOfSequentialArray() below.
 
@@ -176,13 +186,15 @@ console.log("------------------------");
 		function findSumOfSequentialArray(arr) {
 			let sumOfNums = 0;
 			for (let i = 0; i < arr.length; i++) {
-				sum += arr[i];
+				sumOfNums += arr[i];
 			}
 
 			return sumOfNums;
 		}
 
 		// ✅ Write your answer / explanation here.
+		// Time: O(N) The algorithm will iterate over the entire array a single time, introducing linear time complexity.
+		// Space: O(1) We only have a constant number of variables defined here, not affected by array size.
 
 // 🚧 Activity 3: Calculating Big O Runtimes
 
@@ -211,6 +223,8 @@ console.log("------------------------");
 		}
 
 		// ✅ Write your answer / explanation here.
+		// Time: O(N^2) Because we have nested iteration, the number of operations required will increase quadratically as a function of the input size.
+		// Space: O(1) We only have a constant number of variables defined here, so space complexity is not influenced by the size of the input.
 
 	// 2️⃣ Determine the Big O runtime of findSumOfSequentialArray() below.
 
@@ -221,3 +235,5 @@ console.log("------------------------");
 		}
 
 		// ✅ Write your answer / explanation here.
+		// Time: O(1) because we have no iteration, just a constant number of expressions, the size of the input doesn't affect the number of required operations.
+		// Space: O(1) Our algorithm is storing nothing in memory.
